@@ -80,9 +80,7 @@ class CategoryService
         $category = $this->em->getRepository("App:Category")->find($id);
         $categoryrelatedwithproducts = $this->em->getRepository("App:Product")->findByCategory($id);
 
-        if (!is_null($category)) {
-
-        } else {
+        if (is_null($category)) {
             $message = "An error has occurred trying to remove the currrent category - Error: The category id does not exist";
             return $message;
         }

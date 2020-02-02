@@ -18,9 +18,7 @@ class ProductTransformer
                 $category = $product->getCategory();
                 $categoryName = null;
                 if (!is_null($category)) {
-
                     $categoryName = $category->getName();
-
                 }
                 if (is_null($currency)) {
                     $productCurrency = $product->getCurrency();
@@ -42,9 +40,7 @@ class ProductTransformer
             $category = $products->getCategory();
             $categoryName = null;
             if (!is_null($category)) {
-
                 $categoryName = $category->getName();
-
             }
             if (is_null($currency)) {
                 $productCurrency = $products->getCurrency();
