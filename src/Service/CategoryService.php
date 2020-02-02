@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -19,7 +18,7 @@ class CategoryService
         $this->requestStack = $requestStack;
     }
 
-    public function addCategory(RequestStack $requestStack)
+    public function addCategory()
     {
 
         $request = $this->requestStack->getCurrentRequest();
@@ -50,7 +49,7 @@ class CategoryService
         return $categories;
     }
 
-    public function editCategory(RequestStack $requestStack, $id)
+    public function editCategory($id)
     {
         $request = $this->requestStack->getCurrentRequest();
         $name = $request->request->get("name", null);
@@ -76,7 +75,7 @@ class CategoryService
 
     }
 
-    public function deleteCategory(RequestStack $requestStack, $id)
+    public function deleteCategory($id)
     {
         $category = $this->em->getRepository("App:Category")->find($id);
         $categoryrelatedwithproducts = $this->em->getRepository("App:Product")->findByCategory($id);

@@ -2,13 +2,13 @@
 
 namespace App\Service;
 
+use App\Entity\Product;
 use Symfony\Component\HttpClient\CurlHttpClient;
 
 
 class ChangeCurrencyService
 {
 
-    const USD = 'USD', EUR = 'EUR';
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class ChangeCurrencyService
         $response = $client->request('GET', 'https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR');
         $contentType = $response->getHeaders()['content-type'][0];
         $contents = json_decode($response->getContent(), true);
-        $EURPriceFromUSD = $contents['rates'][self::EUR];
+        $EURPriceFromUSD = $contents['rates'][Product::EUR];
         return $EURPriceFromUSD;
     }
 
@@ -32,7 +32,7 @@ class ChangeCurrencyService
         $response = $client->request('GET', 'https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD');
         $contentType = $response->getHeaders()['content-type'][0];
         $contents = json_decode($response->getContent(), true);
-        $USDPriceFromEUR = $contents['rates'][self::USD];
+        $USDPriceFromEUR = $contents['rates'][Product::USD];
         return $USDPriceFromEUR;
     }
 
@@ -44,9 +44,9 @@ class ChangeCurrencyService
 
             if ($currencyAndValues['currency'] != $productcurrency) {
 
-                if ($currencyAndValues['currency'] == self::USD) {
+                if ($currencyAndValues['currency'] == Product::USD) {
                     $product->setPrice($productprice *= $currencyAndValues['USDPriceFromEUR']);
-                } elseif ($currencyAndValues['currency'] == self::EUR) {
+                } elseif ($currencyAndValues['currency'] == Product::EUR) {
                     $product->setPrice($productprice *= $currencyAndValues['EURPriceFromUSD']);
                 }
 

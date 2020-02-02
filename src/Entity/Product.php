@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Product
 {
+    const EUR = 'EUR', USD = 'USD';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

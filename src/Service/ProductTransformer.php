@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Category;
-
 
 class ProductTransformer
 {
@@ -34,7 +32,7 @@ class ProductTransformer
                     'id' => $product->getId(),
                     'name' => $product->getName(),
                     'category.name' => $categoryName,
-                    'price' => round($product->getPrice(),2),
+                    'price' => round($product->getPrice(), 2),
                     'currency' => $productCurrency
                 ];
 

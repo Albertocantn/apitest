@@ -11,7 +11,6 @@ class ProductService
 {
     private $em;
     private $requestStack;
-    const EUR = 'EUR', USD = 'USD';
 
     public function __construct(EntityManagerInterface $em, RequestStack $requestStack)
     {
@@ -33,7 +32,7 @@ class ProductService
 
     }
 
-    public function addProduct(RequestStack $requestStack)
+    public function addProduct()
     {
         $request = $this->requestStack->getCurrentRequest();
         $name = $request->request->get("name", null);
@@ -44,7 +43,7 @@ class ProductService
         $category = $this->em->getRepository("App:Category")->findOneById($category);
 
 
-        if (!is_null($name) && ($currency == self::EUR || $currency == self::USD)) {
+        if (!is_null($name) && ($currency == Product::EUR || $currency == Product::USD)) {
             $product = new Product();
             $product->setName($name);
             $product->setCategory($category);

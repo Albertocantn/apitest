@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Category;
-
 
 class CategoryTransformer
 {

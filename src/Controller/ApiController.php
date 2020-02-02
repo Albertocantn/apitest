@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\Category;
 use App\Service\ProductTransformer;
 use App\Service\CategoryTransformer;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -11,7 +10,6 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ProductService;
@@ -26,7 +24,6 @@ use App\Service\ChangeCurrencyService;
  */
 class ApiController extends AbstractFOSRestController
 {
-    const EUR = 'EUR', USD = 'USD';
     private $productService;
     private $serializer;
     private $categoryService;
@@ -91,7 +88,7 @@ class ApiController extends AbstractFOSRestController
 
             if ($request->query->has("currency")) {
                 $currency = $request->query->get("currency");
-                if ($currency == self::EUR || $currency == self::USD) {
+                if ($currency == Product::EUR || $currency == Product::USD) {
                     $USDPriceFromEUR = $this->changeCurrencyService->getUSDValueFromEUR();
                     $EURPriceFromUSD = $this->changeCurrencyService->getEURValueFromUSD();
 
@@ -134,7 +131,7 @@ class ApiController extends AbstractFOSRestController
      * @Rest\Post("/v1/product", name="product_add")
      */
 
-    public function addProduct(RequestStack $request)
+    public function addProduct()
     {
 
         $product = [];
@@ -142,7 +139,7 @@ class ApiController extends AbstractFOSRestController
         try {
             $code = 201;
             $error = false;
-            $product = $this->productService->addProduct($request);
+            $product = $this->productService->addProduct();
             if (is_null($product)) {
                 $code = 500;
                 $error = true;
@@ -170,9 +167,8 @@ class ApiController extends AbstractFOSRestController
      * @Rest\Post("/v1/category", name="category_add")
      */
 
-    public function addCategory(
-        RequestStack $request
-    ) {
+    public function addCategory()
+    {
 
         $category = [];
         $message = "";
@@ -180,7 +176,7 @@ class ApiController extends AbstractFOSRestController
         try {
             $code = 201;
             $error = false;
-            $category = $this->categoryService->addCategory($request);
+            $category = $this->categoryService->addCategory();
         } catch (Exception $ex) {
             $code = 500;
             $error = true;
@@ -233,16 +229,14 @@ class ApiController extends AbstractFOSRestController
      * @Rest\Put("/v1/category/{id}", name="category_edit")
      */
 
-    public function editCategory(
-        RequestStack $request,
-        $id
-    ) {
+    public function editCategory($id)
+    {
 
         $category = [];
 
         try {
 
-            $category = $this->categoryService->editCategory($request, $id);
+            $category = $this->categoryService->editCategory($id);
             if (!is_null($category)) {
                 $code = 200;
                 $error = false;
@@ -273,15 +267,13 @@ class ApiController extends AbstractFOSRestController
      */
 
 
-    public function deleteCategory(
-        RequestStack $request,
-        $id
-    ) {
+    public function deleteCategory($id)
+    {
 
         try {
             $code = 200;
             $error = false;
-            $message = $this->categoryService->deleteCategory($request, $id);
+            $message = $this->categoryService->deleteCategory($id);
 
 
         } catch (Exception $ex) {
