@@ -58,7 +58,7 @@ class CategoryService
         $category = $this->em->getRepository("App:Category")->find($id);
 
         if (!is_null($category)) {
-            if (!is_null($name) && $name!='') {
+            if (!is_null($name) && $name != '') {
                 $category->setName($name);
             }
 
